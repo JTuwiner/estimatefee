@@ -9,6 +9,7 @@
     "sass-dev": "node-sass --watch sass --precision 8 --output public/css"
   },
   "dependencies": {
+    "dotenv": "^6.0.0",
     "async-cache": "^1.1.0",
     "awesomplete": "^1.1.1",
     "bitcoin": "^3.0.1",
