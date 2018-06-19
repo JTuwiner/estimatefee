@@ -1,3 +1,4 @@
+require('dotenv').config();
 var koa = require('koa');
 var nunjucks = require('koa-nunjucks-render');
 

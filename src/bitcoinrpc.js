@@ -1,9 +1,9 @@
 var bitcoin = require('bitcoin');
 var client = new bitcoin.Client({
-	host: '104.154.117.110',
-	port: 8332,
-	user: 'Ulysseys',
-	pass: 'ZWHqhL4Xf9JMokLPzd4eeD',
+	host: process.env.BTC_RPC_HOST,
+	port: process.env.BTC_RPC_PORT,
+	user: process.env.BTC_RPC_USER,
+	pass: process.env.BTC_RPC_PASS,
 	timeout: 30000
 });
 
