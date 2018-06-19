@@ -1,0 +1,72 @@
+{% extends 'master.html' %}
+{% block embed %}
+
+
+<div class="container">
+    <div class="row">
+        <h1>bitcoin core vs unlimited transaction selection</h1>
+    </div>
+
+    <p>
+        Bitcoin Core supports a feature known as <strong>CPFP</strong> (Child Pays For Parent), which allows a transaction
+        to "pay" for its parent. Bitcoin Unlimited on the other hand does not support this feature, most likely because
+        with an unbounded blocksize there will be little need for it.
+    <p>
+        So while CPFP has proven to be an unquestionably a useful feature for bitcoin users, it's not clear how much this affects miners profits.
+        So let's take a look by comparing the mempool of bitcoin core vs bitcoin unlimited:
+    </p>
+
+    <div id="chart1" style="width:100%; height:400px;"></div>
+
+
+    <strong><span id="summary"></span></strong>
+
+
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/getmempools"></script>
+<script type="text/javascript" src="/highcharts/highcharts.js"></script>
+
+<script>
+
+	var chart1 = Highcharts.chart('chart1', {
+      title: 'Bitcoin Vs Unlimited',
+      yAxis: {
+          title: {
+          	text: 'Bitcoins of fee'
+          }
+      },
+      xAxis: {
+      	title: {
+      		text: 'blocksize'
+		}
+      },
+      series: [{
+      	name: 'Bitcoin Unlimited',
+        data: window.unlimitedmempool
+      }, {
+        name: 'Bitcoin Core',
+        data: window.coremempool
+      }]
+	});
+
+	var diff = window.coremempool[window.coremempool.length - 1][1] - window.unlimitedmempool[window.unlimitedmempool.length - 1][1];
+
+
+	document.getElementById('summary').innerText = 'tldr; A block found right now by a bitcoin core miner would would contain about ~' + diff.toFixed(8) +
+      'BTC more in fees than a bitcoin unlimited block, although in practice is every so slightly more (due to also supporting bip-125). Typically the extra ' +
+        'fees per block available to a core miners are around 0 - 0.11 BTC';
+
+</script>
+
+
+
+
+
+
+
+{% endblock %}

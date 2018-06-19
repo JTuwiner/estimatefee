@@ -1,0 +1,120 @@
+{% extends 'master.html' %}
+{% block embed %}
+
+
+<div class="container">
+    <div class="row">
+        <h1>Transaction Information</h1>
+        <h3>{{ transaction.txid }}</h3>
+    </div>
+    <hr>
+    <div class="col-md-4 col-sm-12">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-xs-6">
+                    Fee Rate:
+                </div>
+                <div class="col-xs-6 bold">
+                    {{ transaction.feeRate | round }} sat/byte
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-xs-6">
+                    Effective Fee Rate:
+                </div>
+                <div class="col-xs-6 bold">
+                    {{ transaction.effectiveFeeRate | round }} sat/byte
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-xs-6">
+                    Estimated Confirmation:
+                </div>
+                <div class="col-xs-6 bold">
+                    {% if transaction.estimatedBlocks < 1 %}
+                    Not available
+                    {% else %}
+                     Within {{ transaction.estimatedBlocks }} blocks
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+
+        {% if ancestorList.length > 0 %}
+        <div class="col-xs-12">
+            <h4>Unconfirmed Ancestor Transactions</h4>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover ">
+                    <thead>
+                    <tr>
+                        <th>Txid</th>
+                        <th>Fee Rate</th>
+                        <th>Effective Fee Rate</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ancestors in ancestorList %}
+                    <tr>
+                        <td>
+                            <a href="{{ ancestors.txid}}">
+                            {{ ancestors.txid }}
+                            </a>
+                        </td>
+                        <td>{{ ancestors.feeRate | round }} sat/byte</td>
+                        <td>{{ ancestors.effectiveFeeRate  | round }} sat/byte</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if descendantList.length > 0 %}
+        <div class="col-xs-12">
+            <h4>Unconfirmed Descendant Transactions</h4>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover ">
+                    <thead>
+                    <tr>
+                        <th>Txid</th>
+                        <th>Fee Rate</th>
+                        <th>Effective Fee Rate</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for descendants in descendantList %}
+                    <tr>
+                        <td>
+                            <a href="{{descendants.txid}}">
+                                {{ descendants.txid }}
+                            </a>
+                        </td>
+                        <td>{{ descendants.feeRate | round }} sat/byte</td>
+                        <td>{{ descendants.effectiveFeeRate | round }} sat/byte</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}{% endblock %}

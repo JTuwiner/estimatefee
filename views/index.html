@@ -1,0 +1,132 @@
+{% extends 'master.html' %}
+{% block embed %}
+
+    <div class="container">
+        <div style="display: flex; align-items: center; flex-direction: column;">
+            <div class="row" style="width: 100%;">
+                <div class="col-sm-7 col-xs-12">
+                    <h2>Bitcoin Fee Estimation</h2>
+                </div>
+                <div class="col-sm-5 col-sm-offset-0 bold col-xs-8 col-xs-offset-4">
+                    <form>
+                        <label style="font-family: 'Proxima-Nova-Regular'";>to confirm within:</label>
+                        <select class="form-control" id="selectBlocks" onChange="render();">
+                            {% for item in estimates %}
+                            <option value="{{ [item.n , item.amount] }}" {% if item.n == 6 %}selected="selected"{% endif %}>≤ {{ item.n }} blocks ( ~{{ item.n * 10 }} min)</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+            </div>
+        <div class=" col-xs-10 jumbotron">
+            <div class="row" style="border-bottom: 1px solid #bbb; padding: 5px 0px;">
+                <div class="col-xs-7" style="border-right: 1px solid #bbb;">
+                    To confirm within <span class="bold" id="xBlocks"></span> blocks ( ~<span class="bold" id="xMin"></span> min)
+                </div>
+                <div class="col-xs-5 bold">
+                    <span class="bold" id="xAmount"></span> satoshis/byte
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-xs-7">
+                    For a standard transaction with
+                    <input id="xInputs" type="text" value="2" size="2" oninput="render();">
+                    inputs
+                </div>
+                <div class="col-xs-5 bold">
+                    ~<span class="bold" id="xBytes"></span> bytes
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-7">
+                    and
+                    <input id="xOutputs" type="text" value="2" size="2" oninput="render();">
+                    outputs
+                </div>
+                <div class="col-xs-5 bold">
+                    ~<span class="bold" id="xSatoshis"></span> satoshis
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-7">
+
+                </div>
+                <div class="col-xs-5 bold">
+                    ~<span class="bold" id="xUsd"></span> USD
+                </div>
+            </div>
+        </div>
+        </div>
+
+        {# Locate Transaction #}
+        <div class="row" style="margin-bottom: 25px;">
+            <div class="col-sm-6 col-xs-12 text-center">
+                <form id="searchForm">
+                    <span class="bold">Locate Transaction: </span> <input type="text" id="txlocator" /> <button type="submit">Search!</button>
+                </form>
+
+            </div>
+            <div class="col-sm-6 col-xs-12 text-center">
+                <div id="search-error" style="color:red;" class="bold"></div>
+            </div>
+        </div>
+
+        {# Chart #}
+        <div id="chart" style="height: 400px"></div>
+
+        <input type="hidden" id="btcToUsd" value="{{ btcToUsd }}">
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+        <script>
+					function getSelected() {
+						var e = document.getElementById('selectBlocks');
+						var selection = e.options[e.selectedIndex].value;
+						return selection.split(',');
+					}
+
+					function getInputs() {
+                      var n = parseInt(document.getElementById('xInputs').value);
+                      if (n < 1) return NaN;
+                      return n;
+                    }
+
+                    function getOutputs() {
+                      var n = parseInt(document.getElementById('xOutputs').value);
+                      if (n < 1) return NaN;
+                      return n;
+                    }
+                    
+                    function render() {
+                        var s = getSelected();
+                        var n = parseFloat(s[0]);
+                        var amount = parseFloat(s[1]);
+                        var inputs = getInputs();
+                        var outputs = getOutputs();
+                        var bytes = ( 148 * inputs ) + 10 + ( 34 * outputs );
+                        var satoshis = amount * bytes;
+                        var btcToUsd = parseFloat(document.getElementById('btcToUsd').value);
+                        var usd = (satoshis / 1e8 * btcToUsd).toFixed(2);
+
+                        document.getElementById("xBlocks").innerText = n;
+                        document.getElementById("xAmount").innerText = amount;
+                        document.getElementById("xMin").innerText = n * 10;
+                        document.getElementById("xBytes").innerText = bytes;
+                        document.getElementById("xSatoshis").innerText = satoshis;
+                        document.getElementById("xUsd").innerText = usd;
+
+                        if (typeof showRecommend !== 'undefined') {
+                          showRecommend(n, amount);
+                        }
+                    }
+                    render();
+        </script>
+    <script src="/getrawmempool"></script>
+    <script type="text/javascript" src="/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="/chart.js"></script>
+    <script>
+        render(); // for the recommendation line
+    </script>
+{% endblock %}
