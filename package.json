@@ -1,0 +1,34 @@
+{
+  "name": "estimatefee",
+  "version": "0.0.1",
+  "description": "A service to let you know bitcoin fees",
+  "main": "server.js",
+  "scripts": {
+    "start-dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass-dev": "node-sass --watch sass --precision 8 --output public/css"
+  },
+  "dependencies": {
+    "async-cache": "^1.1.0",
+    "awesomplete": "^1.1.1",
+    "bitcoin": "^3.0.1",
+    "bootstrap-sass": "^3.3.7",
+    "cloudflare-ip": "0.0.6",
+    "collections": "^5.0.6",
+    "font-awesome": "^4.7.0",
+    "highcharts": "^5.0.7",
+    "jquery": "^3.1.1",
+    "koa": "^1.2.5",
+    "koa-nunjucks-render": "^1.2.0",
+    "koa-router": "^5.4.0",
+    "koa-static": "^2.1.0",
+    "node-sass": "^4.5.0",
+    "router": "^1.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "engines": {
+    "node": "7.x"
+  }
+}

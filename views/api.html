@@ -1,0 +1,17 @@
+{% extends 'master.html' %}
+{% block embed %}
+
+
+<div class="container">
+    <div class="row">
+        <h1>API</h1>
+    </div>
+    <hr>
+    You can use <code>https://estimatefee.com/n/$CONFS</code> where $CONFS can anything from 2 to 1008. We directly proxy the results
+    from bitcoin core using `estimatesmartfee` (with a 30 second cache), so the value is in bitcoin per 1000 bytes. If you're using this, make sure to put a fallback. If it
+    works, it'll be accurate. But don't expect five 9s of reliability -- because, really, I really only made the API to look cool.
+</div>
+
+{% endblock %}
+
+{% block scripts %}{% endblock %}

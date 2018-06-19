@@ -1,0 +1,37 @@
+/* Custom colors */
+$dark-color: #353536;
+$brand-color: #e58929;
+
+/*Components*/
+$border-radius-base: 2px;
+$border-radius-large: 4px;
+$border-radius-small: 1px;
+
+/* Typography */
+$font-family-sans-serif: 'Proxima-Nova-Regular', "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-serif: 'Proxima-Nova-Regular', serif;
+$headings-font-family: 'Proxima-Nova-Bold', "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+/* Scaffolding */
+$text-color: darken($dark-color, 10%);
+$link-color: $brand-color;
+$link-hover-decoration: none;
+
+/*Fonts*/
+$icon-font-path: '/bootstrap/fonts/bootstrap/';
+
+/*Navbar*/
+$navbar-margin-bottom: 20px;
+$navbar-default-bg: $dark-color;
+$navbar-border-radius: 0px;
+$navbar-default-color: #fff;
+$navbar-default-link-color: #fff;
+$navbar-default-link-active-color: lighten($dark-color, 10%);
+$navbar-default-brand-color: #fff;
+$navbar-default-brand-hover-color: $brand-color;
+$navbar-default-link-hover-color: $brand-color;
+$navbar-default-border: transparent;
+$navbar-default-link-hover-bg: transparent;
+
+
+@import "../public/bootstrap/stylesheets/bootstrap";
