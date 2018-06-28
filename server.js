@@ -81,7 +81,7 @@ router.get("/", function*() {
 router.get("/n/:n", function*(next) {
   const n = Number.parseInt(this.params.n);
 
-  if (!Number.isFinite(n) || n < 2 || n > 1008) return yield* next;
+  if (!Number.isFinite(n) || n < 1 || n > 1008) return yield* next;
 
   this.body = yield bitcoinrpc.estimateFee(n);
 });
