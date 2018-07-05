@@ -58,9 +58,8 @@ router.get("/", function*() {
 });
 
 router.get("/fee-estimates", function*() {
-  const feeRange = yield estimateFeeRange(RANGE);
-  this.type = "application/json";
-  this.body = feeRange;
+  const feeEstimates = yield estimateFeeRange(RANGE);
+  this.body = "window.feeEstimates = " + JSON.stringify(feeEstimates.estimates);
 });
 
 // NOTE: Removed
