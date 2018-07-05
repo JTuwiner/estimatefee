@@ -13,6 +13,9 @@ const cloudflareIp = require("cloudflare-ip");
 const coreProcessMempool = require("./src/core-process-mempool");
 const unlimitedProcessMempool = require("./src/unlimited-process-mempool");
 const biggestCluster = require("./src/biggest-cluster");
+const estimateFeeRange = require("./src/estimate-fee-range")
+
+const RANGE = [2, 4, 6, 12, 24, 48, 144, 504, 1008];
 
 app.use(function*(next) {
   if (process.NODE_ENV !== "production") yield next;
@@ -43,10 +46,8 @@ app.use(
 );
 
 router.get("/", function*() {
-  const range = [2, 4, 6, 12, 24, 48, 144, 504, 1008];
-
   let estimates = yield Promise.all(
-    range.map(n =>
+    RANGE.map(n =>
       bitcoinrpc
         .estimateFee(n)
         .then(amount => ({ n, amount: Math.round((amount * 1e8) / 1000) }))
@@ -54,6 +55,12 @@ router.get("/", function*() {
   );
 
   yield this.render("index", { btcToUsd: 8080, estimates });
+});
+
+router.get("/fee-estimates", function*() {
+  const feeRange = yield estimateFeeRange(RANGE);
+  this.type = "application/json";
+  this.body = feeRange;
 });
 
 // NOTE: Removed
