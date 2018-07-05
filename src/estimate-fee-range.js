@@ -37,9 +37,10 @@ module.exports = async function(range, maxAgeSec = 30) {
 
     // Lookup fee for each value in range
     for (let i = 0; i < range.length; i++) {
-      const amount = await bitcoinrpc.estimateFee(range[i]);
+      const n = range[i];
+      const amount = await bitcoinrpc.estimateFee(n);
       feeRange.estimates.push({
-        n: i,
+        n,
         amount: Math.round((amount * 1e8) / 1000)
       });
     }
