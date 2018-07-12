@@ -215,6 +215,14 @@ router.get("/mempool-transaction/:txid", function*() {
 });
 
 router.get("/price/btc", function*() {
+  const env = process.env.NODE_ENV;
+
+  if (env === "development") {
+    this.response.set("Access-Control-Allow-Origin", "http://localhost:4000");
+  } else if (env === "production") {
+    this.response.set("Access-Control-Allow-Origin", "http://buybitcoinworldwide.com");
+  }
+
   this.response.set("Content-Type", "application/json");
 
   try {
