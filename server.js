@@ -14,6 +14,7 @@ const coreProcessMempool = require("./src/core-process-mempool");
 const unlimitedProcessMempool = require("./src/unlimited-process-mempool");
 const biggestCluster = require("./src/biggest-cluster");
 const estimateFeeRange = require("./src/estimate-fee-range")
+const getBtcPrice = require("./src/btc-price");
 
 const RANGE = [2, 4, 6, 12, 24, 48, 144, 504, 1008];
 
@@ -211,6 +212,20 @@ router.get("/mempool-transaction/:txid", function*() {
     ancestorList,
     descendantList
   });
+});
+
+router.get("/price/btc", function*() {
+  this.response.set("Content-Type", "application/json");
+
+  try {
+    const result = yield getBtcPrice();
+    this.status = 200;
+    this.response.set("Content-Length", result.length);
+    this.response.body = result;
+  } catch (e) {
+    this.status = 500;
+    this.response.body = JSON.stringify({error: {message: "internal server error"}});
+  }
 });
 
 function* Search(min, max, f) {
