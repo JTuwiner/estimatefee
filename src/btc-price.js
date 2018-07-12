@@ -30,7 +30,8 @@ const fetchBtcPrice = (cb) => {
 };
 
 /**
- * Resolves cached BTC price if time
+ * Resolves cached BTC price if current time matches
+ * cached otherwise request latest price from Coindesk
  * @return {Promise} - resovles {Object} currentprice JSON
  */
 module.exports = function() {
