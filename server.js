@@ -220,7 +220,7 @@ router.get("/price/btc", function*() {
   if (env === "development") {
     this.response.set("Access-Control-Allow-Origin", "http://localhost:4000");
   } else if (env === "production") {
-    this.response.set("Access-Control-Allow-Origin", "https://buybitcoinworldwide.com");
+    this.response.set("Access-Control-Allow-Origin", "https://www.buybitcoinworldwide.com");
   }
 
   this.response.set("Content-Type", "application/json");
