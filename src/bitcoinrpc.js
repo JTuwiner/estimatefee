@@ -30,25 +30,32 @@ exports.estimateFee = n => {
 var feeProbablyCache = new AsyncCache({
   maxAge: 1000 * 60 * 5, // 5 minute cache
   load: function(key, cb) {
-    console.log("Getting the feerate for: ", key);
+    console.log("Probably getting the feerate for: ", key);
     client.cmd("estimaterawfee", key, 0.5, (err, data) => {
       if (err) return cb(err);
 
-      let feeRate = data["short"]["feerate"];
+      // NOTE: #11 configures required response
+      // properties which are not always present
+      const rawFees = {
+        short: Object.assign({ feeRate: 0 }, data.short),
+        medium: Object.assign({ feeRate: 0 }, data.medium),
+        long: Object.assign({ feerate: 0 }, data.long)
+      };
+
+      // Find fee rate prioritizing in
+      // order of: short, medium, long
+      const feeRate =
+        rawFees.short.feeRate ||
+        rawFees.medium.feeRate ||
+        rawFees.long.feeRate ||
+        0;
+
+      // Send found fee rate
       if (feeRate > 0) {
         return cb(null, feeRate);
       }
 
-      feeRate = data["medium"]["feerate"];
-      if (feeRate > 0) {
-        return cb(null, feeRate);
-      }
-
-      feeRate = data["long"]["feerate"];
-      if (feeRate > 0) {
-        return cb(null, feeRate);
-      }
-
+      // Send unfound reponse
       return cb(null, -1);
     });
   }
